@@ -17,7 +17,20 @@
       "title": "Hop Forward"
     },{
       "command": "hop.hopback",
-      "title": "Hop Back"}]
+      "title": "Hop Back"
+    }
+    ],
+    
+  "keybindings": [
+    {
+      "key": "ctrl+alt+f",
+      "command": "hop.hopforward"    
+  },
+  {
+    "key": "ctrl+alt+b",
+    "command": "hop.hopback"    
+}
+]
   },
   "scripts": {
     "lint": "eslint .",
@@ -35,3 +48,4 @@
     "@vscode/test-electron": "^2.3.4"
   }
 }
+
