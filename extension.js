@@ -11,10 +11,15 @@ const vscode = require('vscode');
  */
 function activate(context) {
 
+	function highlight() {
+		const decoration = vscode.window.createTextEditorDecorationType({
+			backgroundColor: 'yellow', // Your desired highlight color
+			color: 'black' // Your desired text color
+		});
+		return decoration;
+	}
 	
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
+	
 	let hopforward = vscode.commands.registerCommand('hop.hopforward', function () {
 		
 		const editor = vscode.window.activeTextEditor;
@@ -32,10 +37,10 @@ function activate(context) {
 			for (let i = 0 ;i <ddg.length; i++)
 			{
 				if (ddg[i][0]==highlighted && ddg[i][1]==currline+1){
-					const decoration = vscode.window.createTextEditorDecorationType({
-                        backgroundColor: 'yellow', // Your desired highlight color
-                        color: 'black' // Your desired text color
-                    });
+					// const decoration = vscode.window.createTextEditorDecorationType({
+                    //     backgroundColor: 'yellow', // Your desired highlight color
+                    //     color: 'black' // Your desired text color
+                    // });
 					console.log(String(ddg[i]))
 					let l = new Number(ddg[i][3]).valueOf() -1
 					
@@ -44,6 +49,7 @@ function activate(context) {
 					let pos1 = new vscode.Position(l,ind)
 					let pos2= new vscode.Position(l,ind+String(ddg[i][2]).length)
 					const rangeToHighlight = new vscode.Range(pos1, pos2);
+					const decoration=highlight();
 					editor.setDecorations(decoration, [rangeToHighlight]);
 
                     // Optionally, you can remove the decoration after a delay or when needed.
@@ -69,10 +75,7 @@ function activate(context) {
 		const selection = editor.selection;
 		const ddg = [["x", 17, "y", 18],["y", 18, "x", 6],["x", 6, "y", 7],["y", 23, "x", 6]]
 		if (selection && !selection.isEmpty) {
-			const decoration = vscode.window.createTextEditorDecorationType({
-				backgroundColor: 'yellow', // Your desired highlight color
-				color: 'black' // Your desired text color
-			});
+			
 			const selectionRange = new vscode.Range(selection.start.line, selection.start.character, selection.end.line, selection.end.character);
 			const highlighted = editor.document.getText(selectionRange).trim();
 			const currline = editor.selection.active.line;
@@ -88,6 +91,7 @@ function activate(context) {
 					let pos1 = new vscode.Position(l,ind)
 					let pos2= new vscode.Position(l,ind+String(ddg[i][0]).length)
 					const rangeToHighlight = new vscode.Range(pos1, pos2);
+					const decoration=highlight();
 					editor.setDecorations(decoration, [rangeToHighlight]);
 
                     // Optionally, you can remove the decoration after a delay or when needed.
