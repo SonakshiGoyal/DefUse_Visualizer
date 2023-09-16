@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 require('readline');
 const vscode = require('vscode');
+const fs = require('fs');
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -9,6 +10,7 @@ const vscode = require('vscode');
 /**
  * @param {vscode.ExtensionContext} context
  */
+
 function activate(context) {
 
 	function highlight() {
@@ -26,7 +28,9 @@ function activate(context) {
 		let lines = editor.document.getText().split("\n");
 		//const uri = vscode.Uri;
 		const selection = editor.selection;
-		const ddg = [["x", 17, "y", 18],["y", 18, "x", 6],["x", 6, "y", 7],["y", 23, "x", 6]]
+		const inputFilePath = 'C:\\Users\\Admin\\Downloads\\hop\\input\\input1.txt';
+		const inputText = fs.readFileSync(inputFilePath, 'utf-8');
+		const ddg = parseInput(inputText);
 		if (selection && !selection.isEmpty) {
 			const selectionRange = new vscode.Range(selection.start.line, selection.start.character, selection.end.line, selection.end.character);
 			const highlighted = editor.document.getText(selectionRange).trim();
@@ -73,7 +77,9 @@ function activate(context) {
 		let lines = editor.document.getText().split("\n");
 		//const uri = vscode.Uri;
 		const selection = editor.selection;
-		const ddg = [["x", 17, "y", 18],["y", 18, "x", 6],["x", 6, "y", 7],["y", 23, "x", 6]]
+		const inputFilePath = 'C:\\Users\\Admin\\Downloads\\hop\\input\\input1.txt';
+		const inputText = fs.readFileSync(inputFilePath, 'utf-8');
+		const ddg = parseInput(inputText);
 		if (selection && !selection.isEmpty) {
 			
 			const selectionRange = new vscode.Range(selection.start.line, selection.start.character, selection.end.line, selection.end.character);
@@ -111,6 +117,21 @@ function activate(context) {
 	context.subscriptions.push(hopforward);
 	context.subscriptions.push(hopback);
 	
+}
+function parseInput(inputText) {
+    
+    const regex = /\(([^,]+), (\d+), (\d+)\)---\(([^,]+), (\d+), (\d+)\);/g;
+    
+    const result = [];
+    
+    let match;
+    while ((match = regex.exec(inputText)) !== null) {
+        const [_, defVar, defLine, defCol, useVar, useLine, useCol] = match;
+        
+        result.push([defVar, parseInt(defLine), useVar, parseInt(useLine)]);
+    }
+    
+    return result;
 }
 
 // This method is called when your extension is deactivated
