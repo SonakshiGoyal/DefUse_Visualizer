@@ -61,7 +61,6 @@ function activate(context) {
 	});
 
 
-
 	let hopback = vscode.commands.registerCommand('hop.hopback', function () {
 		
 		const editor = vscode.window.activeTextEditor;
